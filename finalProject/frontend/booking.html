@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoCare | Book Service</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="glass-header">
+    <div class="container-nav">
+      
+        <div class="logo">
+        <i class="fas fa-car-alt"></i>
+        <span>Auto<span>Care</span></span>
+      </div>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li><a href="services.html"><i class="fas fa-tools"></i> Services</a></li>
+          <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+          <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="login.html" class="btn-outline"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="register.html" class="btn-primary"><i class="fas fa-user-plus"></i> Register</a>
+      </div>
+      <button class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Booking Hero -->
+  <section class="booking-hero">
+    <div class="container">
+      <div class="booking-hero-content">
+        <h1>Book Your <span>Service</span></h1>
+        <p>Schedule your vehicle service with our certified technicians in just a few clicks</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Process Steps -->
+  <section class="booking-steps">
+    <div class="container">
+      <div class="steps-container">
+        <div class="step active">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Service Selection</h3>
+            <p>Choose your required services</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Date & Time</h3>
+            <p>Select your preferred slot</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Vehicle Details</h3>
+            <p>Provide your vehicle information</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Confirmation</h3>
+            <p>Review and confirm booking</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Form -->
+  <section class="booking-form-section">
+    <div class="container">
+      <div class="booking-form-container">
+        <div class="booking-form">
+          <h2>Select Your Services</h2>
+          <p>Choose from our premium service packages or select individual services</p>
+          
+          <div class="form-group">
+            <label for="service-type">Service Type</label>
+            <div class="radio-group">
+              <input type="radio" id="package" name="service-type" value="package" checked>
+              <label for="package">Service Package</label>
+              <input type="radio" id="individual" name="service-type" value="individual">
+              <label for="individual">Individual Services</label>
+            </div>
+          </div>
+
+          <!-- Service Packages -->
+          <div class="service-packages" id="service-packages">
+            <div class="package-card selected">
+              <div class="package-header">
+                <h3>Essential Care</h3>
+                <div class="package-price">$129</div>
+              </div>
+              <div class="package-features">
+                <ul>
+                  <li><i class="fas fa-check-circle"></i> Oil & Filter Change</li>
+                  <li><i class="fas fa-check-circle"></i> Tire Rotation</li>
+                  <li><i class="fas fa-check-circle"></i> Fluid Level Check</li>
+                  <li><i class="fas fa-check-circle"></i> Brake Inspection</li>
+                </ul>
+              </div>
+              <button class="btn-package-select">Select</button>
+            </div>
+
+            <div class="package-card">
+              <div class="package-header">
+                <h3>Premium Care</h3>
+                <div class="package-price">$249</div>
+              </div>
+              <div class="package-features">
+                <ul>
+                  <li><i class="fas fa-check-circle"></i> Everything in Essential</li>
+                  <li><i class="fas fa-check-circle"></i> Air Filter Replacement</li>
+                  <li><i class="fas fa-check-circle"></i> Battery Check</li>
+                  <li><i class="fas fa-check-circle"></i> Full Inspection</li>
+                </ul>
+              </div>
+              <button class="btn-package-select">Select</button>
+            </div>
+
+            <div class="package-card">
+              <div class="package-header">
+                <h3>Complete Care</h3>
+                <div class="package-price">$399</div>
+              </div>
+              <div class="package-features">
+                <ul>
+                  <li><i class="fas fa-check-circle"></i> Everything in Premium</li>
+                  <li><i class="fas fa-check-circle"></i> Cabin Air Filter</li>
+                  <li><i class="fas fa-check-circle"></i> Fuel System Clean</li>
+                  <li><i class="fas fa-check-circle"></i> Full Detail</li>
+                </ul>
+              </div>
+              <button class="btn-package-select">Select</button>
+            </div>
+          </div>
+
+          <!-- Individual Services (hidden by default) -->
+          <div class="individual-services" id="individual-services" style="display: none;">
+            <div class="service-category">
+              <h4><i class="fas fa-oil-can"></i> Maintenance Services</h4>
+              <div class="service-options">
+                <div class="service-option">
+                  <input type="checkbox" id="oil-change" name="services" value="oil-change">
+                  <label for="oil-change">
+                    <span class="service-name">Oil Change</span>
+                    <span class="service-price">$59</span>
+                    <span class="service-duration">30 min</span>
+                  </label>
+                </div>
+                <div class="service-option">
+                  <input type="checkbox" id="tire-rotation" name="services" value="tire-rotation">
+                  <label for="tire-rotation">
+                    <span class="service-name">Tire Rotation</span>
+                    <span class="service-price">$39</span>
+                    <span class="service-duration">30 min</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="service-category">
+              <h4><i class="fas fa-tools"></i> Repair Services</h4>
+              <div class="service-options">
+                <div class="service-option">
+                  <input type="checkbox" id="brake-service" name="services" value="brake-service">
+                  <label for="brake-service">
+                    <span class="service-name">Brake Service</span>
+                    <span class="service-price">$129</span>
+                    <span class="service-duration">1.5 hrs</span>
+                  </label>
+                </div>
+                <div class="service-option">
+                  <input type="checkbox" id="battery-replacement" name="services" value="battery-replacement">
+                  <label for="battery-replacement">
+                    <span class="service-name">Battery Replacement</span>
+                    <span class="service-price">$89</span>
+                    <span class="service-duration">45 min</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-navigation">
+            <button class="btn-outline btn-large" disabled>Back</button>
+            <button class="btn-primary btn-large">Next: Select Date & Time</button>
+          </div>
+        </div>
+
+        <div class="booking-summary">
+          <div class="summary-card">
+            <h3>Booking Summary</h3>
+            <div class="summary-content">
+              <div class="summary-item">
+                <i class="fas fa-info-circle"></i>
+                <p>No services selected yet</p>
+              </div>
+            </div>
+            <div class="summary-total">
+              <h4>Estimated Total</h4>
+              <div class="total-amount">$0</div>
+            </div>
+            <div class="summary-support">
+              <i class="fas fa-headset"></i>
+              <p>Need help? Call our support: <strong>(800) 555-1234</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="why-choose-us">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why Book With <span>AutoCare</span></h2>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h3>Easy Online Booking</h3>
+          <p>Schedule your service 24/7 with our convenient online system</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Same-Day Service</h3>
+          <p>90% of appointments completed on the same day</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>12-Month Warranty</h3>
+          <p>All services come with our satisfaction guarantee</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="logo">
+            <i class="fas fa-car-alt"></i>
+            <span>Auto<span>Care</span></span>
+          </div>
+          <p>Premium automotive services with a commitment to excellence, integrity, and customer satisfaction since 2010.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-services">
+          <h3>Our Services</h3>
+          <ul>
+            <li><a href="#">Preventive Maintenance</a></li>
+            <li><a href="#">Engine Repair</a></li>
+            <li><a href="#">Transmission Service</a></li>
+            <li><a href="#">Brake Systems</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h3>Contact Us</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> 123 Auto Lane, Motor City, MC 12345</li>
+            <li><i class="fas fa-phone"></i> (800) 555-1234</li>
+            <li><i class="fas fa-envelope"></i> info@autocare.example.com</li>
+            <li><i class="fas fa-clock"></i> Mon-Fri: 7:30AM - 6:00PM</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 AutoCare Premium Vehicle Services. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="booking.js"></script>
+</body>
+</html>

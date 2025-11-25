@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary-color: #f72585;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --gray-color: #6c757d;
+      --success-color: #4bb543;
+      --error-color: #ff3333;
+      --warning-color: #ffc107;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7ff;
+      color: var(--dark-color);
+    }
+    
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 20px 0;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+    
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+    
+    .sidebar-header h2 {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .sidebar-header h2 i {
+      margin-right: 10px;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .sidebar-menu a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      overflow: hidden;
+    }
+    
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .user-info {
+      flex: 1;
+    }
+    
+    .user-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    
+    .user-role {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    .logout-btn {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    /* Main Content Styles */
+    .main-content {
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      color: var(--dark-color);
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+    }
+    
+    .search-bar {
+      position: relative;
+      margin-right: 15px;
+    }
+    
+    .search-bar input {
+      padding: 10px 15px 10px 40px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 250px;
+      transition: all 0.3s;
+    }
+    
+    .search-bar input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      outline: none;
+    }
+    
+    .search-bar i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-color);
+    }
+    
+    .notification-btn {
+      background: none;
+      border: none;
+      color: var(--gray-color);
+      font-size: 18px;
+      cursor: pointer;
+      position: relative;
+      margin-right: 15px;
+    }
+    
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--secondary-color);
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Dashboard Cards */
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .card-title {
+      font-size: 14px;
+      color: var(--gray-color);
+      font-weight: 500;
+    }
+    
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    
+    .card-icon.users {
+      background-color: var(--primary-color);
+    }
+    
+    .card-icon.vehicles {
+      background-color: var(--success-color);
+    }
+    
+    .card-icon.feedback {
+      background-color: var(--secondary-color);
+    }
+    
+    .card-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    .card-change {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .card-change.positive {
+      color: var(--success-color);
+    }
+    
+    .card-change.negative {
+      color: var(--error-color);
+    }
+    
+    /* Section Styles */
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 30px;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .section-actions {
+      display: flex;
+      align-items: center;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+      margin-right: 10px;
+    }
+    
+    .btn-outline:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+    
+    /* Table Styles */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    
+    th {
+      background-color: #f8f9fa;
+      color: var(--gray-color);
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 15px;
+      font-size: 14px;
+    }
+    
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    
+    tr:hover td {
+      background-color: #f8f9fa;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .badge-primary {
+      background-color: rgba(67, 97, 238, 0.1);
+      color: var(--primary-color);
+    }
+    
+    .badge-success {
+      background-color: rgba(75, 181, 67, 0.1);
+      color: var(--success-color);
+    }
+    
+    .badge-warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--warning-color);
+    }
+    
+    .badge-danger {
+      background-color: rgba(255, 51, 51, 0.1);
+      color: var(--error-color);
+    }
+    
+    .rating-stars {
+      color: var(--warning-color);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gray-color);
+    }
+    
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+    
+    .empty-state p {
+      margin-top: 10px;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .dashboard-container {
+        grid-template-columns: 70px 1fr;
+      }
+      
+      .sidebar-header h2 span,
+      .sidebar-menu a span,
+      .user-info,
+      .logout-btn {
+        display: none;
+      }
+      
+      .sidebar-header h2 {
+        justify-content: center;
+      }
+      
+      .sidebar-menu a {
+        justify-content: center;
+        padding: 12px 0;
+      }
+      
+      .sidebar-menu a i {
+        margin-right: 0;
+        font-size: 18px;
+      }
+      
+      .user-avatar {
+        margin-right: 0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .header-actions {
+        margin-top: 15px;
+        width: 100%;
+      }
+      
+      .search-bar {
+        flex: 1;
+        margin-right: 10px;
+      }
+      
+      .search-bar input {
+        width: 100%;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2><i class="fas fa-car"></i> <span>AutoMinder</span></h2>
+      </div>
+      <ul class="sidebar-menu">
+        <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+        <li><a href="#"><i class="fas fa-user"></i> <span>Profile</span></a></li>
+        <li><a href="#"><i class="fas fa-car"></i> <span>Vehicles</span></a></li>
+        <li><a href="#"><i class="fas fa-comment-alt"></i> <span>Feedback</span></a></li>
+        <li><a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-username">Loading...</div>
+            <div class="user-role" id="sidebar-role">Loading...</div>
+          </div>
+          <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <h1>Dashboard Overview</h1>
+        <div class="header-actions">
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search...">
+          </div>
+          <button class="notification-btn">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dashboard Cards -->
+      <div class="dashboard-cards">
+        <div class="card fade-in">
+          <div class="card-header">
+            <span class="card-title">Total Users</span>
+            <div class="card-icon users">
+              <i class="fas fa-users"></i>
+            </div>
+          </div>
+          <div class="card-value" id="total-users">0</div>
+          <div class="card-change positive">
+            <i class="fas fa-arrow-up"></i> 12% from last month
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="card-header">
+            <span class="card-title">Total Vehicles</span>
+            <div class="card-icon vehicles">
+              <i class="fas fa-car"></i>
+            </div>
+          </div>
+          <div class="card-value" id="total-vehicles">0</div>
+          <div class="card-change positive">
+            <i class="fas fa-arrow-up"></i> 8% from last month
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="card-header">
+            <span class="card-title">Total Feedback</span>
+            <div class="card-icon feedback">
+              <i class="fas fa-comment-alt"></i>
+            </div>
+          </div>
+          <div class="card-value" id="total-feedback">0</div>
+          <div class="card-change negative">
+            <i class="fas fa-arrow-down"></i> 3% from last month
+          </div>
+        </div>
+      </div>
+
+      <!-- User Section -->
+      <div class="section fade-in" id="user-section">
+        <div class="section-header">
+          <h2 class="section-title">User Information</h2>
+          <div class="section-actions">
+            <button class="btn btn-outline"><i class="fas fa-download"></i> Export</button>
+            <button class="btn btn-primary"><i class="fas fa-plus"></i> Add User</button>
+          </div>
+        </div>
+        <div id="user-info"></div>
+      </div>
+
+      <!-- Vehicle Section -->
+      <div class="section fade-in" id="vehicle-section">
+        <div class="section-header">
+          <h2 class="section-title">Vehicle Information</h2>
+          <div class="section-actions">
+            <button class="btn btn-outline"><i class="fas fa-download"></i> Export</button>
+            <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Vehicle</button>
+          </div>
+        </div>
+        <div id="vehicle-info"></div>
+      </div>
+
+      <!-- Feedback Section -->
+      <div class="section fade-in" id="feedback-section">
+        <div class="section-header">
+          <h2 class="section-title">Feedback</h2>
+          <div class="section-actions">
+            <button class="btn btn-outline"><i class="fas fa-download"></i> Export</button>
+            <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Feedback</button>
+          </div>
+        </div>
+        <div id="feedback-info"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const userId = parseInt(params.get("userId"));
+    const role = params.get("role")?.toUpperCase();
+
+    if (!userId || !role) {
+      alert("Unauthorized access. Please login first.");
+      window.location.href = "login.html";
+    }
+
+    const apiUrl = `http://localhost:8080/api/dashboard?userId=${userId}`;
+
+    // Update sidebar user info
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      window.location.href = 'login.html';
+    });
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        const currentUser =
+          role === "ADMIN"
+            ? data.users.find((u) => u.id === userId)
+            : data.users?.[0] || {
+                id: userId,
+                username: "Unknown",
+                email: "",
+                phone: "",
+                role: "USER",
+                vehicles: data.vehicles || [],
+              };
+
+        const isAdmin = role === "ADMIN";
+
+        // Update sidebar user info
+        document.getElementById('sidebar-username').textContent = currentUser.username || 'Unknown';
+        document.getElementById('sidebar-role').textContent = currentUser.role || 'User';
+
+        // Update dashboard stats
+        document.getElementById('total-users').textContent = isAdmin ? data.users.length : 1;
+        document.getElementById('total-vehicles').textContent = isAdmin ? data.vehicles.length : (currentUser.vehicles?.length || 0);
+        document.getElementById('total-feedback').textContent = isAdmin ? data.feedbacks.length : 
+          (data.feedbacks.filter(f => f.customer && f.customer.id === userId).length);
+
+        // User Info
+        const userDiv = document.getElementById('user-info');
+        userDiv.innerHTML = isAdmin
+          ? generateUsersTable(data.users)
+          : generateUserDetails(currentUser);
+
+        // Vehicle Info
+        const vehicleDiv = document.getElementById('vehicle-info');
+        vehicleDiv.innerHTML = isAdmin
+          ? generateVehiclesTable(data.vehicles, data.users)
+          : generateUserVehicle(currentUser.vehicles || []);
+
+        // Feedback Info
+        const feedbackDiv = document.getElementById('feedback-info');
+        feedbackDiv.innerHTML = isAdmin
+          ? generateFeedbacksTable(data.feedbacks)
+          : generateUserFeedbacks(data.feedbacks, userId);
+
+        // Adjust UI based on role
+        if (!isAdmin) {
+          document.querySelectorAll('.section-actions').forEach(el => el.style.display = 'none');
+          document.querySelector('.sidebar-menu li:nth-child(2) a').click(); // Auto-select Profile tab for regular users
+        }
+
+      } catch (error) {
+        console.error("Failed to load dashboard:", error);
+        alert("Failed to load dashboard data. Please try again.");
+      }
+    }
+
+    function generateUsersTable(users) {
+      if (!users || users.length === 0) {
+        return `
+          <div class="empty-state">
+            <i class="fas fa-user-slash"></i>
+            <h3>No Users Found</h3>
+            <p>There are currently no users in the system.</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${users
+                .map(
+                  (u) => `
+                <tr>
+                  <td>${u.id}</td>
+                  <td>
+                    <div class="user-profile">
+                      <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      ${u.username}
+                    </div>
+                  </td>
+                  <td>${u.email || '-'}</td>
+                  <td>${u.phone || '-'}</td>
+                  <td><span class="badge ${u.role === 'ADMIN' ? 'badge-primary' : 'badge-success'}">${u.role}</span></td>
+                  <td>
+                    <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function generateUserDetails(user) {
+      return `
+        <div style="display: grid; grid-template-columns: 100px 1fr; gap: 20px;">
+          <div class="user-avatar" style="width: 100px; height: 100px; font-size: 40px;">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 15px;">
+              <div><strong>ID:</strong></div>
+              <div>${user.id}</div>
+              
+              <div><strong>Username:</strong></div>
+              <div>${user.username}</div>
+              
+              <div><strong>Email:</strong></div>
+              <div>${user.email || '-'}</div>
+              
+              <div><strong>Phone:</strong></div>
+              <div>${user.phone || '-'}</div>
+              
+              <div><strong>Role:</strong></div>
+              <div><span class="badge ${user.role === 'ADMIN' ? 'badge-primary' : 'badge-success'}">${user.role}</span></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top: 10px;">
+              <i class="fas fa-edit"></i> Edit Profile
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function generateVehiclesTable(vehicles, users) {
+      if (!vehicles || vehicles.length === 0) {
+        return `
+          <div class="empty-state">
+            <i class="fas fa-car-crash"></i>
+            <h3>No Vehicles Found</h3>
+            <p>There are currently no vehicles in the system.</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>License</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${vehicles
+                .map((v) => {
+                  // Find the user who owns this vehicle
+                  const owner = users.find(u => u.vehicles?.some(uv => uv.id === v.id));
+                  const username = owner ? owner.username : "N/A";
+
+                  return `
+                    <tr>
+                      <td>${v.id}</td>
+                      <td>${v.make}</td>
+                      <td>${v.model}</td>
+                      <td>${v.year}</td>
+                      <td>${v.licensePlate || '-'}</td>
+                      <td>${username}</td>
+                      <td><span class="badge badge-success">Active</span></td>
+                      <td>
+                        <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  `;
+                })
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function generateUserVehicle(vehicles) {
+      if (!vehicles || vehicles.length === 0) {
+        return `
+          <div class="empty-state">
+            <i class="fas fa-car-crash"></i>
+            <h3>No Vehicles Registered</h3>
+            <p>You don't have any vehicles registered yet.</p>
+            <button class="btn btn-primary" style="margin-top: 15px;">
+              <i class="fas fa-plus"></i> Add Vehicle
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>License</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${vehicles
+                .map(v => `
+                  <tr>
+                    <td>${v.make}</td>
+                    <td>${v.model}</td>
+                    <td>${v.year}</td>
+                    <td>${v.licensePlate || '-'}</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>
+                      <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `)
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function generateFeedbacksTable(feedbacks) {
+      if (!feedbacks || feedbacks.length === 0) {
+        return `
+          <div class="empty-state">
+            <i class="fas fa-comment-slash"></i>
+            <h3>No Feedback Found</h3>
+            <p>There is currently no feedback in the system.</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${feedbacks
+                .map((f) => `
+                  <tr>
+                    <td>${f.id}</td>
+                    <td>
+                      <div class="rating-stars">
+                        ${'<i class="fas fa-star"></i>'.repeat(f.rating || 0)}
+                        ${'<i class="far fa-star"></i>'.repeat(5 - (f.rating || 0))}
+                      </div>
+                    </td>
+                    <td>${f.comment || 'No comment'}</td>
+                    <td>${f.customer?.username || 'Unknown'}</td>
+                    <td>${f.date || new Date().toLocaleDateString()}</td>
+                    <td>
+                      <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `)
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function generateUserFeedbacks(feedbacks, userId) {
+      const userFeedbacks = feedbacks?.filter(f => f.customer && f.customer.id === userId) || [];
+
+      if (userFeedbacks.length === 0) {
+        return `
+          <div class="empty-state">
+            <i class="fas fa-comment-slash"></i>
+            <h3>No Feedback Submitted</h3>
+            <p>You haven't submitted any feedback yet.</p>
+            <button class="btn btn-primary" style="margin-top: 15px;">
+              <i class="fas fa-plus"></i> Submit Feedback
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${userFeedbacks
+                .map(f => `
+                  <tr>
+                    <td>${f.id}</td>
+                    <td>
+                      <div class="rating-stars">
+                        ${'<i class="fas fa-star"></i>'.repeat(f.rating || 0)}
+                        ${'<i class="far fa-star"></i>'.repeat(5 - (f.rating || 0))}
+                      </div>
+                    </td>
+                    <td>${f.comment || 'No comment'}</td>
+                    <td>${f.date || new Date().toLocaleDateString()}</td>
+                    <td>
+                      <button class="btn btn-outline" style="padding: 5px 8px; font-size: 12px;">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `)
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // Initialize the dashboard
+    loadDashboard();
+  </script>
+</body>
+</html>
